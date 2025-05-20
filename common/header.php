@@ -52,7 +52,7 @@
         <!-- header middle -->
         <div class="header-middle">
             <div class="container">
-                <div class="row align-items-center" >
+                <div class="row align-items-center justify-content-end">
                    
                     <div class="d-none d-lg-block col-lg-6 col-xl-5">
                         <div class="header-middle-search">
@@ -430,10 +430,9 @@
                                         </div>
                                     </div>
                                 </li> -->
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link " href="product.php" data-bs-toggle="dropdown">Products</a>
-                                    <!-- <ul class="dropdown-menu fade-down">
-                                        <li class="dropdown-submenu">
+                               
+                                <!-- <ul class="dropdown-menu fade-down">
+                                    <li class="dropdown-submenu">
                                             <a class="dropdown-item dropdown-toggle" href="#">Shop Grid</a>
                                             <ul class="dropdown-menu">
                                                 <li><a class="dropdown-item" href="shop-grid.html">Shop Grid One</a>
@@ -471,13 +470,15 @@
                                                 Sidebar</a></li>
                                     </ul>
                                 </li> -->
+                                <!-- <a class="nav-link " href="products.php" data-bs-toggle="dropdown">Products</a> -->
+                                <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
                                 <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
                             </ul>
                             <!-- nav-right -->
-                            <div class="nav-right">
-                                <a class="nav-right-link" href="#"><i class="fal fa-star"></i> Recently Viewed</a>
-                                <a class="nav-right-link" href="track-order.html"><i class="fal fa-truck-fast"></i> Track My Order</a>
-                            </div>
+                            <!-- <div class="nav-right">
+                                <a class="nav-right-link" href="#"><i class="fal fa-star"></i>Login</a>
+                                <a class="nav-right-link" href="track-order.html"><i class="fal fa-truck-fast"></i>Sign in</a>
+                            </div> -->
                         </div>
                     </div>
                 </div>

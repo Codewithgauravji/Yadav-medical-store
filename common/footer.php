@@ -186,7 +186,7 @@
 
 
     <!-- modal popup banner  -->
-	<div class="modal popup-banner fade" id="popup-banner" tabindex="-1" aria-hidden="true">
+	<!-- <div class="modal popup-banner fade" id="popup-banner" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <button type="button" class="btn-close" data-bs-dismiss="modal"><i class="far fa-xmark"></i></button>
@@ -211,7 +211,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- modal popup banner end -->
 
 
