@@ -25,7 +25,7 @@
                                 <div class="hero-content">
                                     <h6 class="hero-sub-title" data-animation="fadeInUp" data-delay=".25s">Easy Health Care</h6>
                                     <h1 class="hero-title" data-animation="fadeInRight" data-delay=".50s">
-                                        Medicine & <span>Health Care</span> For Your Family in city
+                                        Medicineeeeeee & <span>Health Care</span> For Your Family in city
                                     </h1>
                                     <p data-animation="fadeInLeft" data-delay=".75s">
                                         There are many variations of passages orem psum available but the majority
