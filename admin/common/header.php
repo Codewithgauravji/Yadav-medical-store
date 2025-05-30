@@ -4,17 +4,14 @@
 
  
  <nav class="sidebar sidebar-offcanvas" id="sidebar">
-<<<<<<< HEAD
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
           <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a>
           <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
         </div>
-=======
         <!-- <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
           <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a>
           <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
         </div> -->
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
         <ul class="nav">
           <li class="nav-item profile">
             <div class="profile-desc">
@@ -171,11 +168,7 @@
               </li>
             </ul>
             <ul class="navbar-nav navbar-nav-right">
-<<<<<<< HEAD
               <li class="nav-item dropdown d-none d-lg-block">
-=======
-              <!-- <li class="nav-item dropdown d-none d-lg-block">
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
                 <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">+ Create New Project</a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
                   <h6 class="p-3 mb-0">Projects</h6>
@@ -215,7 +208,6 @@
                   <div class="dropdown-divider"></div>
                   <p class="p-3 mb-0 text-center">See all projects</p>
                 </div>
-<<<<<<< HEAD
               </li>
               <li class="nav-item nav-settings d-none d-lg-block">
                 <a class="nav-link" href="#">
@@ -223,11 +215,6 @@
                 </a>
               </li>
               <li class="nav-item dropdown border-left">
-=======
-              </li> -->
-              
-              <li class="nav-item dropdown  ">
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
                 <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                   <i class="mdi mdi-email"></i>
                   <span class="count bg-success"></span>
