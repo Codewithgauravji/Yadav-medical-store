@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Yadav Admin</title>
+    <title>Yadav Adminnnnnn</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
@@ -135,11 +135,8 @@
                 </div>
               </div>
             </div>
-<<<<<<< HEAD
             <!-- <div class="row">
-=======
             <div class="row">
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
               <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
@@ -267,11 +264,8 @@
                   </div>
                 </div>
               </div>
-<<<<<<< HEAD
             </div> -->
-=======
             </div>
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
             <div class="row">
               <div class="col-sm-4 grid-margin">
                 <div class="card">
@@ -331,11 +325,8 @@
                 </div>
               </div>
             </div>
-<<<<<<< HEAD
             <!-- <div class="row ">
-=======
             <div class="row ">
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
@@ -472,13 +463,10 @@
                   </div>
                 </div>
               </div>
-<<<<<<< HEAD
             </div> -->
             <!-- <div class="row">
-=======
             </div>
             <div class="row">
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
               <div class="col-md-6 col-xl-4 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
@@ -637,13 +625,10 @@
                   </div>
                 </div>
               </div>
-<<<<<<< HEAD
             </div> -->
             <!-- <div class="row">
-=======
             </div>
             <div class="row">
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
               <div class="col-12">
                 <div class="card">
                   <div class="card-body">
@@ -712,11 +697,8 @@
                   </div>
                 </div>
               </div>
-<<<<<<< HEAD
             </div> -->
-=======
             </div>
->>>>>>> f74f4c071dbf341c680e3c0498f73cab177d42ae
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
