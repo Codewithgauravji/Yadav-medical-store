@@ -50,15 +50,15 @@
         <!-- header top end -->
 
         <!-- header middle -->
-        <div class="header-middle">
+        <!-- <div class="header-middle">
             <div class="container">
                 <div class="row align-items-center justify-content-end">
                    
                     <div class="d-none d-lg-block col-lg-6 col-xl-5">
                         <div class="header-middle-search">
                             <form action="#">
-                                <div class="search-content" >
-                                    <!-- <select class="select">
+                                 <div class="search-content" >
+                                    <select class="select">
                                         <option value="">All Category</option>
                                         <option value="1">Medicine</option>
                                         <option value="2">Medical Equipments</option>
@@ -71,10 +71,10 @@
                                         <option value="9">Fitness</option>
                                         <option value="10">Vitamins & Supplement</option>
                                         <option value="11">Pet Care</option>
-                                    </select> -->
+                                    </select> 
                                     <input type="text" class="form-control" placeholder="Search Here..." style="margin-left: 8px;">
                                     <button type="submit" class="search-btn"><i class="far fa-search"></i></button>
-                                </div>
+                                </div> 
                             </form>
                         </div>
                     </div>
@@ -170,13 +170,13 @@
                                             <a href="#" class="theme-btn">Checkout</a>
                                         </div>
                                     </div>
-                                </li> -->
+                                </li> 
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- header middle end -->
 
         <!-- navbar -->
@@ -186,7 +186,7 @@
                      <div class="col-5 col-lg-3 col-xl-3">
                         <div class="header-middle-logo">
                             <a class="navbar-brand" href="index.html">
-                                <img src="assets/img/logo/logo.png" alt="logo">
+                                <img src="assets/img/logo/logo-light.png" alt="logo">
                             </a>
                         </div>
                     </div>
@@ -473,7 +473,15 @@
                                 <!-- <a class="nav-link " href="products.php" data-bs-toggle="dropdown">Products</a> -->
                                 <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
                                 <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
+                                <li class="nav-item" style="display: flex; align-items: center; margin-left: 10px;">
+    <form class="d-flex" action="#" method="get" style="gap: 8px;">
+        <input class="form-control" type="search" placeholder="Search..." aria-label="Search" name="q" style="max-width: 170px; padding: 4px 10px; font-size: 15px;">
+        <button class="btn btn-outline-success" type="submit" style="padding: 4px 12px;"><i class="far fa-search"></i></button>
+    </form>
+</li>
+     
                             </ul>
+                            
                             <!-- nav-right -->
                             <!-- <div class="nav-right">
                                 <a class="nav-right-link" href="#"><i class="fal fa-star"></i>Login</a>

@@ -1,3 +1,34 @@
+<?php
+// Modern search logic for products by name or price
+include "common/header.php";
+
+// Example: Replace with your actual DB connection
+// $conn = new mysqli('localhost', 'root', '', 'your_db_name');
+// if ($conn->connect_error) { die('Connection failed: ' . $conn->connect_error); }
+
+$searchResults = [];
+if (isset($_GET['q']) && trim($_GET['q']) !== '') {
+    $q = trim($_GET['q']);
+    // Example: Use your actual product table and columns
+    // $stmt = $conn->prepare("SELECT * FROM products WHERE name LIKE ? OR price = ?");
+    // $like = "%$q%";
+    // $stmt->bind_param('ss', $like, $q);
+    // $stmt->execute();
+    // $result = $stmt->get_result();
+    // while ($row = $result->fetch_assoc()) { $searchResults[] = $row; }
+
+    // DEMO: Static array for illustration (replace with DB results)
+    $allProducts = [
+        ['name' => 'Surgical Face Mask', 'price' => '100.00', 'img' => 'assets/img/product/01.png'],
+        ['name' => 'Vitamin C Tablets', 'price' => '250.00', 'img' => 'assets/img/product/02.png'],
+        ['name' => 'Pain Relief Gel', 'price' => '150.00', 'img' => 'assets/img/product/03.png'],
+        ['name' => 'Hand Sanitizer', 'price' => '80.00', 'img' => 'assets/img/product/04.png'],
+    ];
+    $searchResults = array_filter($allProducts, function($p) use ($q) {
+        return stripos($p['name'], $q) !== false || $p['price'] == $q;
+    });
+}
+?>
 <?php include "common/header.php"; ?>
 <main class="main">
 
@@ -319,612 +350,639 @@
                         </div>
                     </div>
                     <div class="col-lg-9">
-                        <div class="col-md-12">
-                            <div class="shop-sort">
-                                <div class="shop-sort-box">
-                                    <div class="shop-sorty-label">Sort By:</div>
-                                    <select class="select">
-                                        <option value="1">Default Sorting</option>
-                                        <option value="5">Latest Items</option>
-                                        <option value="2">Best Seller Items</option>
-                                        <option value="3">Price - Low To High</option>
-                                        <option value="4">Price - High To Low</option>
-                                    </select>
-                                    <div class="shop-sort-show">Showing 1-10 of 50 Results</div>
-                                </div>
-                                <div class="shop-sort-gl">
-                                    <a href="shop-grid.html" class="shop-sort-grid active"><i class="far fa-grid-round-2"></i></a>
-                                    <a href="shop-list.html" class="shop-sort-list"><i class="far fa-list-ul"></i></a>
+                        <?php if(isset($_GET['q']) && trim($_GET['q']) !== ''): ?>
+                            <h4 class="mb-4">Search Results for "<?php echo htmlspecialchars($_GET['q']); ?>"</h4>
+                            <div class="shop-item-wrap item-4">
+                                <div class="row g-4">
+                                    <?php if(count($searchResults) > 0): ?>
+                                        <?php foreach($searchResults as $product): ?>
+                                            <div class="col-md-6 col-lg-4">
+                                                <div class="product-item">
+                                                    <div class="product-img">
+                                                        <a href="#"><img src="<?php echo $product['img']; ?>" alt=""></a>
+                                                    </div>
+                                                    <div class="product-content">
+                                                        <h3 class="product-title"><?php echo htmlspecialchars($product['name']); ?></h3>
+                                                        <div class="product-bottom">
+                                                            <div class="product-price">
+                                                                <span>₹<?php echo $product['price']; ?></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <div class="col-12"><p>No products found.</p></div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                        </div>
-                        <div class="shop-item-wrap item-4">
-                            <div class="row g-4">
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <span class="type">Trending</span>
-                                            <a href="shop-single.html"><img src="assets/img/product/01.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                        <?php else: ?>
+                            <div class="col-md-12">
+                                <div class="shop-sort">
+                                    <div class="shop-sort-box">
+                                        <div class="shop-sorty-label">Sort By:</div>
+                                        <select class="select">
+                                            <option value="1">Default Sorting</option>
+                                            <option value="5">Latest Items</option>
+                                            <option value="2">Best Seller Items</option>
+                                            <option value="3">Price - Low To High</option>
+                                            <option value="4">Price - High To Low</option>
+                                        </select>
+                                        <div class="shop-sort-show">Showing 1-10 of 50 Results</div>
+                                    </div>
+                                    <div class="shop-sort-gl">
+                                        <a href="shop-grid.html" class="shop-sort-grid active"><i class="far fa-grid-round-2"></i></a>
+                                        <a href="shop-list.html" class="shop-sort-list"><i class="far fa-list-ul"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="shop-item-wrap item-4">
+                                <div class="row g-4">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <span class="type">Trending</span>
+                                                <a href="shop-single.html"><img src="assets/img/product/01.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <span class="type hot">Hot</span>
-                                            <a href="shop-single.html"><img src="assets/img/product/02.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <span class="type hot">Hot</span>
+                                                <a href="shop-single.html"><img src="assets/img/product/02.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <span class="type oos">Out Of Stock</span>
-                                            <a href="shop-single.html"><img src="assets/img/product/03.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <span class="type oos">Out Of Stock</span>
+                                                <a href="shop-single.html"><img src="assets/img/product/03.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/04.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/04.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <span class="type discount">10% Off</span>
-                                            <a href="shop-single.html"><img src="assets/img/product/05.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <span class="type discount">10% Off</span>
+                                                <a href="shop-single.html"><img src="assets/img/product/05.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <del>120.00</del><span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <del>120.00</del><span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/06.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/06.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <span class="type new">New</span>
-                                            <a href="shop-single.html"><img src="assets/img/product/07.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <span class="type new">New</span>
+                                                <a href="shop-single.html"><img src="assets/img/product/07.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/08.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/08.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/09.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/09.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/10.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/10.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/11.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/11.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <span class="type hot">Hot</span>
-                                            <a href="shop-single.html"><img src="assets/img/product/12.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <span class="type hot">Hot</span>
+                                                <a href="shop-single.html"><img src="assets/img/product/12.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/13.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/13.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/14.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/14.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/15.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/15.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/16.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/16.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/17.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/17.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
-                                            <a href="shop-single.html"><img src="assets/img/product/18.png" alt=""></a>
-                                            <div class="product-action-wrap">
-                                                <div class="product-action">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                    <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="shop-single.html"><img src="assets/img/product/18.png" alt=""></a>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
+                                                        <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
                                             <span class="type new">New</span>
                                             <a href="shop-single.html"><img src="assets/img/product/19.png" alt=""></a>
                                             <div class="product-action-wrap">
@@ -934,30 +992,28 @@
                                                     <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
                                             <a href="shop-single.html"><img src="assets/img/product/20.png" alt=""></a>
                                             <div class="product-action-wrap">
                                                 <div class="product-action">
@@ -966,30 +1022,28 @@
                                                     <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="product-item">
-                                        <div class="product-img">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-item">
                                             <a href="shop-single.html"><img src="assets/img/product/21.png" alt=""></a>
                                             <div class="product-action-wrap">
                                                 <div class="product-action">
@@ -998,51 +1052,29 @@
                                                     <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                            <div class="product-rate">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <div class="product-bottom">
-                                                <div class="product-price">
-                                                    <span>$100.00</span>
+                                            <div class="product-content">
+                                                <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
+                                                <div class="product-rate">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                    <i class="far fa-shopping-bag"></i>
-                                                </button>
+                                                <div class="product-bottom">
+                                                    <div class="product-price">
+                                                        <span>$100.00</span>
+                                                    </div>
+                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                        <i class="far fa-shopping-bag"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- pagination -->
-                        <div class="pagination-area mt-50">
-                            <div aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true"><i class="far fa-arrow-left"></i></span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><span class="page-link">...</span></li>
-                                    <li class="page-item"><a class="page-link" href="#">10</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true"><i class="far fa-arrow-right"></i></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- pagination end -->
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

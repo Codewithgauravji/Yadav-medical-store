@@ -1263,15 +1263,16 @@ label {
 
 .navbar {
   background: var(--theme-color2);
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding: 15px;
   z-index: 2;
 }
 
 .navbar.fixed-top {
-  background: var(--color-white);
+  background: var(--theme-color2);
   box-shadow: var(--box-shadow2);
   animation: slide-down 0.7s;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 @keyframes slide-down {
@@ -1354,7 +1355,7 @@ label {
   }
 
   .navbar.fixed-top .nav-item .nav-link {
-    color: var(--color-dark);
+    color: var(--color-white);
     padding: 22px 0 22px 0;
   }
 
